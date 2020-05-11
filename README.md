@@ -2,6 +2,7 @@
 # Credit Card Exercise
 
 This repository is used for check if a credit card number is ``valid`` or ``invalid``.
+
 This is the list of credit cards allowed
 ```
 +============+=============+===============+
@@ -23,12 +24,13 @@ It's used ``thor`` gem for help to use the code.
 
 ## First Step
 Clone the repository on your environment.
- ``git clone https://github.com/davidbrahiam/credit_card.git``
+
+``git clone https://github.com/davidbrahiam/credit_card.git``
 
 Install the gem's with ``bundler install`` 
 
 ### How to use
-You can run as ``ruby credit_card.rb validate CREDIT_CARD_NUMBER``.
+You can run it as ``ruby credit_card.rb validate CREDIT_CARD_NUMBER``.
 
 For example: ``ruby credit_card.rb validate 4111111111111111``.
 
