@@ -1,9 +1,8 @@
 
 # Credit Card Exercise
 
- 
 This repository is used for check if a credit card number is ``valid`` or ``invalid``.
-This is the list of credit_cards allowed
+This is the list of credit cards allowed
 ```
 +============+=============+===============+
 | Card Type  | Begins With | Number Length |
@@ -19,6 +18,7 @@ This is the list of credit_cards allowed
 ```
 
 All the code is on ``credit_card.rb``.
+
 It's used ``thor`` gem for help to use the code. 
 
 ## First Step
@@ -34,10 +34,12 @@ For example: ``ruby credit_card.rb validate 4111111111111111``.
 
 ### Preview Tests
 There is some tests already done for you check how it works.
+
 You can run the tests with ``ruby credit_card_test.rb``.
 
 ## How it works
 The code contains a method ``validate`` which makes the validation of determined credit card number.
+
 ```ruby
 def  validate(credit_card_number)
 	# Make sure that credit card number only contains numbers and spaces
@@ -58,7 +60,11 @@ def  validate(credit_card_number)
 	end
 end
 ```
-The method ``validate`` contains the method ``check_type`` which checks if the exists the type of the number. If it does is returned the type of the credit card, else is assigned as an unknown type.
+
+The method ``validate`` contains the method ``check_type`` which checks if exists the type of the number.
+
+if it does, then is returned the type of the credit card, else the credit card is assigned as an unknown type.
+
 ```ruby
 # Check the type of the credit card number
 def  check_type(number)
@@ -76,8 +82,14 @@ def  check_type(number)
 end
 ```
 
-The last  verification done is check if the credit card number is ``valid`` or ``invalid``. 
-The method consist on a sum numbers from the credit card, the number is doubled for those numbers which starting with the next to last digit and continuing with every other digit going back to the beginning of the card.  If the number is greater than 9, then sums every digit. After that, if the total sum is divisible by 10 (without rest), then is a ``valid`` number, else is an ``invalid`` number.
+The last verification done is check if the credit card number is ``valid`` or ``invalid``.
+
+The ``check_sum`` method consist on a sum numbers from the credit card, the number is doubled for those numbers which starting with the next to last digit and continuing with every other digit going back to the beginning of the card.
+
+If the number is greater than 9, then sums every digit.
+
+After that, if the total sum is divisible by 10 (without rest), then is a ``valid`` number, else is an ``invalid`` number.
+
 ```ruby
 # Calculates the sum the credit card number
 def  check_sum(number)
@@ -93,6 +105,7 @@ def  check_sum(number)
 	sum %10 == 0 ? "valid" : "invalid"
 end
 ```
+
 ### Contact
 You can open an issue or sent me a message by email throw ``dbrahiam@gmail.com``.
 If you prefer a call, this is my number ``(+34) 623033964``.
