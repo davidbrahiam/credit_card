@@ -29,6 +29,7 @@ Install the gem's with ``bundler install``
 
 ### How to use
 You can run as ``ruby credit_card.rb validate CREDIT_CARD_NUMBER``.
+
 For example: ``ruby credit_card.rb validate 4111111111111111``.
 
 ### Preview Tests
