@@ -43,29 +43,35 @@ You can run the tests with ``ruby credit_card_test.rb``.
 The code contains a method ``validate`` which makes the validation of determined credit card number.
 
 ```ruby
-def validate(credit_card_number)
-	# In case that the credit card contains spaces, this removes the spaces
-	number = credit_card_number.split(" ").join("")
-	
-	# Make sure that credit card number only contains numbers and is not empty
-	if number.to_s.match(/\D/) || number.length == 0
-		puts "Error of Character, the Credit Card number has to only contains NUMBERS" 
-		return "Error of Character"
+class CreditCard < Thor
+	...
+
+	def validate(credit_card_number)
+		# In case that the credit card contains spaces, this removes the spaces
+		number = credit_card_number.split(" ").join("")
+		
+		# Make sure that credit card number only contains numbers and is not empty
+		if number.to_s.match(/\D/) || number.length == 0
+			puts "Error of Character, the Credit Card number has to only contains NUMBERS" 
+			return "Error of Character"
+		end
+		
+		credit_card = { type: "",  number: number, validation: ""}
+		
+		getting_type = ModuleCreditCardHelper.check_type(number)
+		case getting_type[:status]
+		when :error 
+			puts "#{getting_type[:type]}: #{number} (invalid)"
+			return "#{getting_type[:type]}: #{number} (invalid)"
+		when :success
+			credit_card[:type] = getting_type[:type]
+			credit_card[:validation] = ModuleCreditCardHelper.check_sum(number)
+			puts "#{credit_card[:type]}: #{credit_card[:number]} (#{credit_card[:validation]})"
+			return "#{credit_card[:type]}: #{credit_card[:number]} (#{credit_card[:validation]})"
+		end
 	end
-	
-	credit_card = { type: "",  number: number, validation: ""}
-	
-	getting_type = ModuleCreditCardHelper.check_type(number)
-	case getting_type[:status]
-	when :error 
-		puts "#{getting_type[:type]}: #{number} (invalid)"
-		return "#{getting_type[:type]}: #{number} (invalid)"
-	when :success
-		credit_card[:type] = getting_type[:type]
-		credit_card[:validation] = ModuleCreditCardHelper.check_sum(number)
-		puts "#{credit_card[:type]}: #{credit_card[:number]} (#{credit_card[:validation]})"
-		return "#{credit_card[:type]}: #{credit_card[:number]} (#{credit_card[:validation]})"
-	end
+
+	...
 end
 ```
 
@@ -117,7 +123,7 @@ module ModuleCreditCardHelper
 		end
 		sum %10 == 0 ? "valid" : "invalid"
 	end
-	
+
 	...
 end
 ```
