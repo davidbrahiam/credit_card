@@ -47,8 +47,8 @@ class CreditCard < Thor
         # In case that the credit card contains spaces, this removes the spaces
         number = credit_card_number.split(" ").join("")
         
-        # Make sure that credit card number only contains numbers
-        if number.to_s.match(/\D/) 
+        # Make sure that credit card number only contains numbers and is not empty
+        if number.to_s.match(/\D/) || number.length == 0
             puts "Error of Character, the Credit Card number has to only contains NUMBERS" 
             return "Error of Character"
         end

@@ -67,7 +67,7 @@ class CreditCardTest < Test::Unit::TestCase
         assert_equal('Unknown: 515527746759207 (invalid)', CreditCard.new().validate('515527746759207') )
         
         assert_equal('Error of Character', CreditCard.new().validate('911111eqweweeqw1111111111') )
-        assert_equal('Unknown:  (invalid)', CreditCard.new().validate('') )
+        assert_equal('Error of Character', CreditCard.new().validate('') )
         assert_equal('Error of Character', CreditCard.new().validate('312;3"11232-30eqwe09qw8093812') )
         assert_equal('AMEX: 378282246310005 (valid)', CreditCard.new().validate('3782    82246310005') )
         assert_equal('Error of Character', CreditCard.new().validate('ddjoidj1o2ij312j312oi3') )
