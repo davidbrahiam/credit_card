@@ -43,22 +43,28 @@ You can run the tests with ``ruby credit_card_test.rb``.
 The code contains a method ``validate`` which makes the validation of determined credit card number.
 
 ```ruby
-def  validate(credit_card_number)
-	# Make sure that credit card number only contains numbers and spaces
-	return  puts  "Error of Character, the Credit Card number has to only contains NUMBERS"  if  credit_card_number.to_s.match(/\D.\s/)
+def validate(credit_card_number)
 	# In case that the credit card contains spaces, this removes the spaces
 	number = credit_card_number.split(" ").join("")
-	credit_card = { type:  "", number:  number, validation:  ""}
-	getting_type = check_type(number)
-	case  getting_type[:status]
-	when  :error
-		puts  "Unknown: #{number} (invalid)"
-		return  "Unknown: #{number} (invalid)"
-	when  :success
+	
+	# Make sure that credit card number only contains numbers and is not empty
+	if number.to_s.match(/\D/) || number.length == 0
+		puts "Error of Character, the Credit Card number has to only contains NUMBERS" 
+		return "Error of Character"
+	end
+	
+	credit_card = { type: "",  number: number, validation: ""}
+	
+	getting_type = ModuleCreditCardHelper.check_type(number)
+	case getting_type[:status]
+	when :error 
+		puts "#{getting_type[:type]}: #{number} (invalid)"
+		return "#{getting_type[:type]}: #{number} (invalid)"
+	when :success
 		credit_card[:type] = getting_type[:type]
-		credit_card[:validation] = check_sum(number)
-		puts  "#{credit_card[:type]}: #{credit_card[:number]} (#{credit_card[:validation]})"
-		return  "#{credit_card[:type]}: #{credit_card[:number]} (#{credit_card[:validation]})"
+		credit_card[:validation] = ModuleCreditCardHelper.check_sum(number)
+		puts "#{credit_card[:type]}: #{credit_card[:number]} (#{credit_card[:validation]})"
+		return "#{credit_card[:type]}: #{credit_card[:number]} (#{credit_card[:validation]})"
 	end
 end
 ```
@@ -68,19 +74,23 @@ The method ``validate`` contains the method ``check_type`` which checks if exist
 if it does, then is returned the type of the credit card, else the credit card is assigned as an unknown type.
 
 ```ruby
-# Check the type of the credit card number
-def  check_type(number)
-	num2 = number.slice(0,2)
-	if (num2 == '34' || num2 == '37') && number.length == 15
-		return {status:  :success, type:  "AMEX"}
-	elsif [*51..55].include?(num2.to_i) && number.length == 16
-		return {status:  :success, type:  "MasterCard"}
-	elsif  number.slice(0,4) == '6011' && number.length == 16
-		return {status:  :success, type:  "Discover"}
-	elsif  number[0] == '4' && (number.length == 13 || number.length == 16)
-		return {status:  :success, type:  "VISA"}
+module ModuleCreditCardHelper
+	...
+
+	# Check the type of the credit card number
+	def self.check_type(number)
+		num2 = number.slice(0,2)
+		if (num2 == '34' || num2 == '37') && number.length == 15
+			return {status: :success, type: "AMEX"}
+		elsif [*51..55].include?(num2.to_i) && number.length == 16
+			return {status: :success, type: "MasterCard"}
+		elsif number.slice(0,4) == '6011' && number.length == 16
+			return {status: :success, type: "Discover"}
+		elsif number[0] == '4' && (number.length == 13 || number.length == 16)
+			return {status: :success, type: "VISA"}
+		end
+		{status: :error, type: "Unknown"}
 	end
-	{status:  :error}
 end
 ```
 
@@ -93,18 +103,22 @@ If the number is greater than 9, then sums every digit.
 After that, if the total sum is divisible by 10 (without rest), then is a ``valid`` number, else is an ``invalid`` number.
 
 ```ruby
-# Calculates the sum the credit card number
-def  check_sum(number)
-	sum = 0
-	number.reverse.split("").each_with_index  do |num, i|
-		if((i+1)%2 == 0)
-			aux = (num.to_i*2).to_s
-			aux.length > 1 ? sum += aux[0].to_i+aux[1].to_i : sum+=aux.to_i
-		else
-			sum+=num.to_i
+module ModuleCreditCardHelper
+	# Calculates the sum the credit card number
+	def self.check_sum(number)
+		sum = 0
+		number.reverse.split("").each_with_index do |num, i|
+			if((i+1)%2 == 0)
+				aux = (num.to_i*2).to_s
+				aux.length > 1 ? sum += aux[0].to_i+aux[1].to_i : sum+=aux.to_i
+			else
+				sum+=num.to_i
+			end
 		end
+		sum %10 == 0 ? "valid" : "invalid"
 	end
-	sum %10 == 0 ? "valid" : "invalid"
+	
+	...
 end
 ```
 
