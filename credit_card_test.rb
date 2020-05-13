@@ -6,37 +6,21 @@ class CreditCardTest < Test::Unit::TestCase
 
     # Check types of credit cards
     def test_types
-        assert_equal(Hash, ModuleCreditCardHelper.check_type('4111111111111111').class)
-        assert_equal(:success, ModuleCreditCardHelper.check_type('4111111111111111')[:status])
-        assert_equal("VISA", ModuleCreditCardHelper.check_type('4111111111111111')[:type])
-
-        assert_equal(Hash, ModuleCreditCardHelper.check_type('4111111111111').class)
-        assert_equal(:success, ModuleCreditCardHelper.check_type('4111111111111')[:status])
-        assert_equal("VISA", ModuleCreditCardHelper.check_type('4111111111111')[:type])
-
-        assert_equal(Hash, ModuleCreditCardHelper.check_type('4012888888881881').class)
-        assert_equal(:success, ModuleCreditCardHelper.check_type('4012888888881881')[:status])
-        assert_equal("VISA", ModuleCreditCardHelper.check_type('4012888888881881')[:type])
-
-        assert_equal(Hash, ModuleCreditCardHelper.check_type('378282246310005').class)
-        assert_equal(:success, ModuleCreditCardHelper.check_type('378282246310005')[:status])
-        assert_equal("AMEX", ModuleCreditCardHelper.check_type('378282246310005')[:type])
-
-        assert_equal(Hash, ModuleCreditCardHelper.check_type('6011111111111117').class)
-        assert_equal(:success, ModuleCreditCardHelper.check_type('6011111111111117')[:status])
-        assert_equal("Discover", ModuleCreditCardHelper.check_type('6011111111111117')[:type])
-
-        assert_equal(Hash, ModuleCreditCardHelper.check_type('9111111111111111').class)
-        assert_equal(:error, ModuleCreditCardHelper.check_type('9111111111111111')[:status])
-        assert_equal("Unknown", ModuleCreditCardHelper.check_type('9111111111111111')[:type])
-
-        assert_equal(Hash, ModuleCreditCardHelper.check_type('5105105105105106').class)
-        assert_equal(:success, ModuleCreditCardHelper.check_type('5105105105105106')[:status])
-        assert_equal("MasterCard", ModuleCreditCardHelper.check_type('5105105105105106')[:type])
-
-        assert_equal(Hash, ModuleCreditCardHelper.check_type('5105 1051 0510 5106').class)
-        assert_equal(:error, ModuleCreditCardHelper.check_type('5105 1051 0510 5106')[:status])
-        assert_equal("Unknown", ModuleCreditCardHelper.check_type('5105 1051 0510 5106')[:type])
+        cards_list = [
+            {type: "VISA", status: :success, number: '4111111111111111'},
+            {type: "VISA", status: :success, number: '4111111111111'},
+            {type: "VISA", status: :success, number: '4012888888881881'},
+            {type: "AMEX", status: :success, number: '378282246310005'},
+            {type: "Discover", status: :success, number: '6011111111111117'},
+            {type: "Unknown", status: :error, number: '9111111111111111'},
+            {type: "MasterCard", status: :success, number: '5105105105105106'},
+            {type: "Unknown", status: :error, number: '5105 1051 0510 5106'},
+        ]
+        cards_list.each do |card|
+            assert_equal(Hash, ModuleCreditCardHelper.check_type(card[:number]).class)
+            assert_equal(card[:status], ModuleCreditCardHelper.check_type(card[:number])[:status])
+            assert_equal(card[:type], ModuleCreditCardHelper.check_type(card[:number])[:type])
+        end
     end
 
     # Check the sum of numbers cards
